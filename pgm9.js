@@ -1,32 +1,21 @@
-const fs = require('fs');
-const path = require('path');
+let fs = require('fs');
+let path = require('path');
 
-function getDirectoryContents(dirPath) {
-  const items = [];
-
-  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-
-  entries.forEach(entry => {
-    const fullPath = path.join(dirPath, entry.name);
-
-    if (entry.isDirectory()) {
-      items.push({
-        name: entry.name,
-        type: 'directory',
-        contents: getDirectoryContents(fullPath)
-      });
-    } else if (entry.isFile()) {
-      items.push({
-        name: entry.name,
-        type: 'file'
-      });
-    }
-  });
-
-  return items;
+function listDirectoryContents(dirPath) {
+  try {
+    let result = fs.readdirSync(dirPath).map(item => {
+      let fullPath = path.join(dirPath, item);
+      return {
+        name: item,
+        type: fs.statSync(fullPath).isDirectory() ? 'directory' : 'file',
+        path: fullPath
+      };
+    });
+    console.log(JSON.stringify(result, null, 2));
+  } catch (err) {
+    console.error('Error:', err.message);
+  }
 }
 
-// ✅ FIXED path with correct format
-const directoryPath = 'C:/Users/anilk/Desktop/MovieGenie';
-const result = getDirectoryContents(directoryPath);
-console.log(JSON.stringify(result, null, 2));
+// Example usage
+listDirectoryContents("C:\\Users\\anilk\\Desktop\\power BI");
