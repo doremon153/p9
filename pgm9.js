@@ -18,4 +18,4 @@ function listDirectoryContents(dirPath) {
 }
 
 // Example usage
-listDirectoryContents("C:\\Users\\anilk\\Desktop\\power BI");
+listDirectoryContents("C:\\Users\\Desktop\\power BI");
